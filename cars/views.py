@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from cars.models import Car
-from cars.forms import CarModelForm  
+from cars.forms import CarModelForm
+from django.views import View
+ 
 
 # Create your views here.
 
@@ -16,6 +18,21 @@ def cars_view(request):
        'cars.html',
        {'cars': cars}
     )
+
+class CarsView(View):
+
+   def get(self, request):
+      cars = Car.objects.all().order_by('model')
+      search = request.GET.get('search')
+
+      if search:
+         cars = cars.filter(model__icontains=search)
+      
+      return render(
+         request, 
+         'cars.html',
+         {'cars': cars}
+      )   
 
 def new_car_view(request):
     if request.method == 'POST':
