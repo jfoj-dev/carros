@@ -20,8 +20,9 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return redirect('login')
-        else:
-            login_form = AuthenticationForm()
+    else:
+        login_form = AuthenticationForm()
+
     return render(request, 'login.html', {'login_form': login_form})
 
 def logout_view(request):
